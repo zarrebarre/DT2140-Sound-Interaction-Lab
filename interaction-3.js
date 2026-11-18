@@ -68,6 +68,7 @@ function deviceMoved() {
     statusLabels[2].style("color", "pink");
 
     if (accelerationY > 30) {
+        playAudio();
     }
 }
 
