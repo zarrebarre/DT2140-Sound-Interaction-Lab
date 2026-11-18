@@ -80,7 +80,7 @@ function deviceMoved() {
 }
 
 function deviceTurned() {
-    north = turnAxis;
+    threshVals[1] = turnAxis;
 }
 function deviceShaken() {
     shaketimer = millis();
