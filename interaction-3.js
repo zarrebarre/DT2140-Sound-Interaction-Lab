@@ -10,7 +10,6 @@
 let dspNode = null;
 let dspNodeParams = null;
 let jsonParams = null;
-let running = false;
 
 // Change here to ("tuono") depending on your wasm file name
 const dspName = "engine";
@@ -67,7 +66,7 @@ function deviceMoved() {
     movetimer = millis();
     statusLabels[2].style("color", "pink");
 
-    if (accelerationY > 30) {
+    if (accelerationY > 20) {
         playAudio();
     }
 }
@@ -107,20 +106,9 @@ function playAudio() {
     if (audioContext.state === 'suspended') {
         return;
     }
-    if (running) {
-        return;
-    }
-    running = true;
-
-    dspNode.setParamValue("/engine/runtime", 2)
-    dspNode.setParamValue("/engine/maxSpeed", 0.03)
-    dspNode.setParamValue("/engine/volume", 0.3)
+    dspNode.setParamValue("/engine/runtime", 0.2)
     dspNode.setParamValue("/engine/gate", 1)
-
-    setTimeout(() => {
-        dspNode.setParamValue("/engine/gate", 0)
-        running = false;
-    }, 6000);
+    setTimeout(() => { dspNode.setParamValue("/engine/gate", 0) }, 2000);
 }
 
 //==========================================================================================
