@@ -55,7 +55,14 @@ function accelerationChange(accx, accy, accz) {
     let amount = Math.sqrt(accx * accx + accy * accy + accz * accz);
     let freq = 200 + amount * 30;
     freq = Math.min(freq, 2000);
-    playAudio(freq);
+
+    if (amount < 2) {
+        playAudio(freq, 0);
+
+    } else {
+        playAudio(freq, 1);
+    }
+
 }
 
 function rotationChange(rotx, roty, rotz) {
