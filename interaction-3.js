@@ -71,13 +71,13 @@ function deviceTurned() {
     threshVals[1] = turnAxis;
 
 
-    playAudio(30);
+    playAudio(50);
 }
 function deviceShaken() {
     shaketimer = millis();
     statusLabels[0].style("color", "pink");
 
-    playAudio(77);
+    playAudio(100);
 }
 
 function getMinMaxParam(address) {
