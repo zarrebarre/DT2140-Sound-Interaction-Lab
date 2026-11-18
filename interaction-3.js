@@ -69,12 +69,15 @@ function deviceMoved() {
 
 function deviceTurned() {
     threshVals[1] = turnAxis;
+
+
+    playAudio(30);
 }
 function deviceShaken() {
     shaketimer = millis();
     statusLabels[0].style("color", "pink");
 
-    playAudio();
+    playAudio(77);
 }
 
 function getMinMaxParam(address) {
@@ -95,13 +98,15 @@ function getMinMaxParam(address) {
 //
 //==========================================================================================
 
-function playAudio() {
+function playAudio(freq) {
     if (!dspNode) {
         return;
     }
     if (audioContext.state === 'suspended') {
         return;
     }
+    
+    dspNode.setParamValue("/djembe/midi/freq", freq)
     dspNode.setParamValue("/djembe/gate", 1)
     setTimeout(() => { dspNode.setParamValue("/djembe/gate", 0) }, 100);
 }
