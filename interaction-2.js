@@ -12,7 +12,7 @@ let dspNodeParams = null;
 let jsonParams = null;
 
 // Change here to ("tuono") depending on your wasm file name
-const dspName = "bells";
+const dspName = "additiveplus";
 const instance = new FaustWasm2ScriptProcessor(dspName);
 
 // output to window or npm package module
@@ -25,7 +25,7 @@ if (typeof module === "undefined") {
 }
 
 // The name should be the same as the WASM file, so change tuono with brass if you use brass.wasm
-bells.createDSP(audioContext, 1024)
+additiveplus.createDSP(audioContext, 1024)
     .then(node => {
         dspNode = node;
         dspNode.connect(audioContext.destination);
@@ -52,14 +52,18 @@ bells.createDSP(audioContext, 1024)
 //==========================================================================================
 
 function accelerationChange(accx, accy, accz) {
-    // playAudio()
+    let amount = Math.sqrt(accx * accx + accy * accy + accz * accz);
+    let freq = 200 + amount * 30;
+    freq = Math.min(freq, 2000);
+    playAudio(freq);
 }
 
 function rotationChange(rotx, roty, rotz) {
+
 }
 
 function mousePressed() {
-    // playAudio()
+  // playAudio()
     // Use this for debugging from the desktop!
 }
 
@@ -69,12 +73,11 @@ function deviceMoved() {
 }
 
 function deviceTurned() {
-    threshVals[1] = turnAxis;
+    north = turnAxis;
 }
 function deviceShaken() {
     shaketimer = millis();
     statusLabels[0].style("color", "pink");
-    playAudio();
 }
 
 function getMinMaxParam(address) {
@@ -95,15 +98,15 @@ function getMinMaxParam(address) {
 //
 //==========================================================================================
 
-function playAudio() {
+function playAudio(freq) {
     if (!dspNode) {
         return;
     }
     if (audioContext.state === 'suspended') {
         return;
     }
-    dspNode.setParamValue("/englishBell/gate", 1)
-    setTimeout(() => { dspNode.setParamValue("/englishBell/gate", 0) }, 100);
+    dspNode.setParamValue("/additiveplus/gate", 1)
+    dspNode.setParamValue("/additiveplus/freq", freq)
 }
 
 //==========================================================================================
