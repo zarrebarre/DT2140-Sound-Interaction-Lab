@@ -106,17 +106,19 @@ function playAudio() {
         return;
     }
     if (running) {
-        return;                                     
+        return;
     }
     running = true;
 
-    dspNode.setParamValue("/engine/runtime", 1)     
-    dspNode.setParamValue("/engine/gate", 1)        
+    dspNode.setParamValue("/engine/runtime", 2)
+    dspNode.setParamValue("/engine/maxSpeed", 0.03)
+    dspNode.setParamValue("/engine/volume", 0.3)
+    dspNode.setParamValue("/engine/gate", 1)
 
     setTimeout(() => {
-        dspNode.setParamValue("/engine/gate", 0)   
-        running = false;                             
-    }, 3000);      
+        dspNode.setParamValue("/engine/gate", 0)
+        running = false;
+    }, 6000);
 }
 
 //==========================================================================================
