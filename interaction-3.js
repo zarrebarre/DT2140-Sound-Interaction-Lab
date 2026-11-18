@@ -10,9 +10,10 @@
 let dspNode = null;
 let dspNodeParams = null;
 let jsonParams = null;
+let running = false;
 
 // Change here to ("tuono") depending on your wasm file name
-const dspName = "djembe";
+const dspName = "engine";
 const instance = new FaustWasm2ScriptProcessor(dspName);
 
 // output to window or npm package module
@@ -25,7 +26,7 @@ if (typeof module === "undefined") {
 }
 
 // The name should be the same as the WASM file, so change tuono with brass if you use brass.wasm
-djembe.createDSP(audioContext, 1024)
+engine.createDSP(audioContext, 1024)
     .then(node => {
         dspNode = node;
         dspNode.connect(audioContext.destination);
@@ -65,19 +66,18 @@ function mousePressed() {
 function deviceMoved() {
     movetimer = millis();
     statusLabels[2].style("color", "pink");
+
+    playAudio();
 }
 
 function deviceTurned() {
     threshVals[1] = turnAxis;
 
-
-    playAudio(50);
 }
 function deviceShaken() {
     shaketimer = millis();
     statusLabels[0].style("color", "pink");
 
-    playAudio(100);
 }
 
 function getMinMaxParam(address) {
@@ -98,17 +98,25 @@ function getMinMaxParam(address) {
 //
 //==========================================================================================
 
-function playAudio(freq) {
+function playAudio() {
     if (!dspNode) {
         return;
     }
     if (audioContext.state === 'suspended') {
         return;
     }
-    
-    dspNode.setParamValue("/djembe/midi/freq", freq)
-    dspNode.setParamValue("/djembe/gate", 1)
-    setTimeout(() => { dspNode.setParamValue("/djembe/gate", 0) }, 100);
+    if (running) {
+        return;                                     
+    }
+    running = true;
+
+    dspNode.setParamValue("/engine/runtime", 1)     
+    dspNode.setParamValue("/engine/gate", 1)        
+
+    setTimeout(() => {
+        dspNode.setParamValue("/engine/gate", 0)   
+        running = false;                             
+    }, 3000);      
 }
 
 //==========================================================================================
