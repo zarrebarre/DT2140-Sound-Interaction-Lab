@@ -105,14 +105,14 @@ function getMinMaxParam(address) {
 //
 //==========================================================================================
 
-function playAudio(freq) {
+function playAudio(freq, gate) {
     if (!dspNode) {
         return;
     }
     if (audioContext.state === 'suspended') {
         return;
     }
-    dspNode.setParamValue("/additiveplus/gate", 1)
+    dspNode.setParamValue("/additiveplus/gate", gate)
     dspNode.setParamValue("/additiveplus/freq", freq)
 }
 
