@@ -67,7 +67,8 @@ function deviceMoved() {
     movetimer = millis();
     statusLabels[2].style("color", "pink");
 
-    playAudio();
+    if (accelerationY > 30) {
+    }
 }
 
 function deviceTurned() {
